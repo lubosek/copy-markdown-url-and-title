@@ -43,6 +43,12 @@ if (chromiumBrowsers.includes(appName)) {
   title = activeTab.name();
 }
 
+// some Markdown parsers don't like [] in link title
+function filterTitle(title) {
+  const rex = /[\[\]]/g
+  return title.replace(rex, "");
+}
+
 // Microsoft Edge doesn't work properly with activeWindow.activeTab()
 if (appName === "Microsoft Edge") {
   const activeWindow = Application(appName).windows[0];
@@ -54,7 +60,7 @@ if (appName === "Microsoft Edge") {
 
 if (webkitBrowser.includes(appName)) {
   url = Application(appName).documents[0].url();
-  title = Application(appName).documents[0].name();
+  title = filterTitle(Application(appName).documents[0].name());
 }
 
 if (theRest.includes(appName)) {
